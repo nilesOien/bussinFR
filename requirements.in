@@ -7,3 +7,5 @@ email-validator
 httpx
 pytest
 ruff
+gtfs-realtime-bindings
+protobuf

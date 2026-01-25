@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Set program name.
+# Set program name and note start time.
 pn=`basename $0`
+startTm=`date --utc +%s`
 
 # Get the environment file from the command line and source it.
 if [ "$#" -ne 1 ]
@@ -81,6 +82,13 @@ then
  echo Database update failed
  exit -1
 fi
+
+# Write a file so we know when we last updated and how long it took.
+endTm=`date --utc +%s`
+endDt=`date --date=@"$endTm" +"%Y/%m/%d %H:%M:%S %Z"`
+durationSec=`expr "$endTm" - "$startTm"`
+
+echo {\"updated\":\""$endDt"\", \"utim\":"$endTm", \"durationSec\":"$durationSec" } > updated.time
 
 exit 0
 
