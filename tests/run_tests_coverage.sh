@@ -3,8 +3,8 @@
 # Turn on test mode so test databases are used
 export BFR_TEST_MODE=TRUE
 
-# The --cov=. specifies a package which in this case is this
-# directory. This directory can be treated as a pckage
+# The --cov=../webservices specifies a package which in this case is that
+# directory. That directory can be treated as a package
 # because it has a __init__.py file (even though that file
 # does nothing).
 
