@@ -6,6 +6,7 @@ uvicorn
 email-validator
 httpx
 pytest
+pytest-cov
 ruff
 gtfs-realtime-bindings
 protobuf

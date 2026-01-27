@@ -169,9 +169,20 @@ async def get_bus_stops(minLat:     float = Query(default=None),
         lon      = Column(Float,  nullable=False)
         __table_args__ = (UniqueConstraint('stopid', name='unique_constraint'),)
 
-    # Database URL and block file.
-    db_url="sqlite:///../databases/stops/database.db"
-    db_block_file="../databases/stops/db_offline.marker"
+    # Database URL and block file. Depends on if we're in testing mode, which
+    # is set through the BFR_TEST_MODE env var (which has to be set to either ON or TRUE
+    # (case insensitive) to activate test mode).
+    db_dir='databases'
+    testMode=False
+    test_env = os.getenv('BFR_TEST_MODE', 'OFF')
+    if test_env.lower() == 'on' or test_env.lower() == 'true' :
+        testMode=True
+
+    if testMode :
+        db_dir='test_databases'
+
+    db_url="sqlite:///../" + db_dir + "/stops/database.db"
+    db_block_file="../" + db_dir + "/stops/db_offline.marker"
 
     # Connect to the database.
     engine = create_engine(db_url)

@@ -7,3 +7,7 @@ pb_setup/gtfs-realtime.proto
 databases/stops/updated.time
 webservices/__pycache__
 databases/stops/db_offline.marker
+__pycache__
+tests/.coverage
+test_databases/stops/database.db
+tests/bussinFR_coverage
