@@ -21,48 +21,6 @@ def waitOnFile(file) :
         time.sleep(0.25)
     return
 
-# Small function that takes a lat/lon and a range (in Km) and
-# a heading in degrees and returns the resulting lat/lon in a dictionary.
-# Assumes earth's radius is constant.
-def locationPlusRange(lat, lon, rangeKm, heading) :
-    """
-    Calculates the destination lat/lon given start point, 
-    distance(km) and heading(degrees).
-    """
-    # Radius of the Earth in km
-    R = 6371.0
-    
-    # Convert degrees to radians
-    lat_rad = math.radians(lat)
-    lon_rad = math.radians(lon)
-    heading_rad = math.radians(heading)
-    
-    # Calculate angular distance in radians
-    angular_distance = rangeKm / R
-    
-    # Calculate destination latitude
-    dest_lat_rad = math.asin(
-        math.sin(lat_rad) * math.cos(angular_distance) +
-        math.cos(lat_rad) * math.sin(angular_distance) * math.cos(heading_rad)
-    )
-    
-    # Calculate destination longitude
-    dest_lon_rad = lon_rad + math.atan2(
-        math.sin(heading_rad) * math.sin(angular_distance) * math.cos(lat_rad),
-        math.cos(angular_distance) - math.sin(lat_rad) * math.sin(dest_lat_rad)
-    )
-    
-    # Convert back to degrees
-    dest_lat = math.degrees(dest_lat_rad)
-    dest_lon = math.degrees(dest_lon_rad)
-    
-    # Normalize longitude to -180 to +180
-    dest_lon = (dest_lon + 540) % 360 - 180
-    
-    return {'lat': dest_lat, 'lon': dest_lon}
-
-
-
 # Set up tags that appear in the documentation pages that FastAPI generates.
 tags_metadata = [
     {
@@ -107,56 +65,10 @@ class busStopServiceResponseClass(BaseModel) :
 async def get_bus_stops(minLat:     float = Query(default=None),
                         minLon:     float = Query(default=None),
                         maxLat:     float = Query(default=None),
-                        maxLon:     float = Query(default=None),
-                        centerLat:  float = Query(default=None),
-                        centerLon:  float = Query(default=None),
-                        rangeKm:    float = Query(default=None)):
+                        maxLon:     float = Query(default=None)):
     """
     Returns bus stop information for a specified area.
     """
-
-    # The variables we're actually going to use.
-    min_lat=None
-    min_lon=None
-    max_lat=None
-    max_lon=None
-
-    # If the filter variables are set directly, use them.
-    numFilt=0
-    if minLat is not None :
-        min_lat=minLat
-        numFilt += 1
-
-    if minLon is not None :
-        min_lon=minLon
-        numFilt += 1
-
-    if maxLat is not None :
-        max_lat=maxLat
-        numFilt += 1
-
-    if minLon is not None :
-        max_lon=maxLon
-        numFilt += 1
-
-    # If we don't have all 4 filters set directly...
-    if numFilt < 4 :
-        # And we do have a center lat/lon with range...
-        if centerLat is not None and centerLon is not None and rangeKm is not None :
-            # Then try to set the filters from center and range.
-            if min_lat is None :
-                d=locationPlusRange(centerLat, centerLon, rangeKm, 180.0) # Go south (180.0) to get min lat
-                min_lat=d['lat']
-            if min_lon is None :
-                d=locationPlusRange(centerLat, centerLon, rangeKm, 270.0) # Go west (270.0) to get min lon
-                min_lon=d['lon']
-            if max_lat is None :
-                d=locationPlusRange(centerLat, centerLon, rangeKm, 0.0) # Go north (0.0) to get max lat
-                max_lat=d['lat']
-            if max_lon is None :
-                d=locationPlusRange(centerLat, centerLon, rangeKm, 90.0) # Go east (90.0) to get max lon
-                max_lon=d['lon']
-
 
     # Database table ORM model.
     Base = declarative_base()
@@ -193,17 +105,17 @@ async def get_bus_stops(minLat:     float = Query(default=None),
     query = db.query(stopsTable)
 
     # Add filters.
-    if min_lat is not None :
-        query = query.filter(stopsTable.lat >= min_lat)
+    if minLat is not None :
+        query = query.filter(stopsTable.lat >= minLat)
 
-    if min_lon is not None :
-        query = query.filter(stopsTable.lon >= min_lon)
+    if minLon is not None :
+        query = query.filter(stopsTable.lon >= minLon)
 
-    if max_lat is not None :
-        query = query.filter(stopsTable.lat <= max_lat)
+    if maxLat is not None :
+        query = query.filter(stopsTable.lat <= maxLat)
 
-    if max_lon is not None :
-        query = query.filter(stopsTable.lon <= max_lon)
+    if maxLon is not None :
+        query = query.filter(stopsTable.lon <= maxLon)
 
     query = query.order_by(stopsTable.lat)
 
