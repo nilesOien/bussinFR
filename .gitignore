@@ -11,3 +11,6 @@ __pycache__
 tests/.coverage
 test_databases/stops/database.db
 tests/bussinFR_coverage
+databases/vehicles/database.db
+databases/vehicles/updated.time
+databases/vehicles/*.marker
