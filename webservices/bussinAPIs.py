@@ -33,7 +33,7 @@ tags_metadata = [
     },
     {
         "name":"bus-stop-service",
-        "description":"Serves out locations and descriptions of bus stops in a specified area. The area can be specified directly with minimum and maximum lats and lons or a center lat and long with a range in Km can be specified. Directly specified minima/maxima are used preferably with center/range values being used only if directly specified minima/maxima are not specified.",
+        "description":"Serves out locations and descriptions of bus stops in a specified area.",
     }
    ]
 
