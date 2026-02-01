@@ -33,11 +33,15 @@ tags_metadata = [
     },
     {
         "name":"bus-stop-service",
-        "description":"Serves out locations and descriptions of bus stops in a specified area.",
+        "description":"Serves out locations and descriptions of bus stops in a specified area."
     },
     {
         "name":"vehicle-service",
-        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped",
+        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped"
+    },
+    {
+        "name":"trip-service",
+        "description":"Serves out trip updates for a specified stop ID."
     }
    ]
 
@@ -210,6 +214,76 @@ async def get_vehicles(minLat:     float = Query(default=None),
         query = query.filter(vehiclesTable.lon <= maxLon)
 
     query = query.order_by(vehiclesTable.lat)
+
+    waitOnFile(db_block_file)
+
+    db_results = query.all()
+
+    db.close()
+
+    return db_results
+
+
+
+
+
+
+# Trip update end point.
+class tripServiceResponseClass(BaseModel) :
+    """
+    Pydantic class that defines the format of what the vehicle end point serves out.
+    """
+    route:   str
+    arrivaltime: int
+
+# Serve out vehicle information.
+@bussinApp.get("/tripService", tags=['trip-service'], response_model=List[tripServiceResponseClass])
+async def get_trips(stopID:     str = Query(default=None)):
+    """
+    Returns trip update information for the specified stop ID.
+    """
+
+    if stopID is None :
+        return []
+
+    Base = declarative_base()
+
+    class tripsTable(Base):
+        __tablename__='intrepid_trips'
+        id             = Column(Integer, nullable=False, primary_key=True)
+        route          = Column(String,  nullable=False)
+        schedule_relationship = Column(Integer, nullable=False)
+        arrivaltime    = Column(BIGINT(unsigned=True), nullable=False)
+        stopid         = Column(String,   nullable=False)
+
+
+    # Database URL and block file. Depends on if we're in testing mode, which
+    # is set through the BFR_TEST_MODE env var (which has to be set to either ON or TRUE
+    # (case insensitive) to activate test mode).
+    db_dir='databases'
+    testMode=False
+    test_env = os.getenv('BFR_TEST_MODE', 'OFF')
+    if test_env.lower() == 'on' or test_env.lower() == 'true' :
+        testMode=True
+
+    if testMode :
+        db_dir='test_databases'
+
+    db_url="sqlite:///../" + db_dir + "/trip_updates/database.db"
+    db_block_file="../" + db_dir + "/trip_updates/db_offline.marker"
+
+    # Connect to the database.
+    engine = create_engine(db_url)
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    db = SessionLocal()
+
+    # Set up query but not all columns - only selected ones.
+    query = db.query(tripsTable).with_entities(tripsTable.route, tripsTable.arrivaltime)
+
+    # Add filter.
+    query = query.filter(tripsTable.stopid == stopID)
+
+    query = query.order_by(tripsTable.arrivaltime)
 
     waitOnFile(db_block_file)
 
