@@ -66,7 +66,7 @@ print(f"There are {len(feed.entity)} entities in the feed {args.url}")
 # Database table looks like :
 # CREATE TABLE vehicles_update (
 #	route VARCHAR NOT NULL, 
-#	schedule_id INTEGER NOT NULL, 
+#	schedule_relationship INTEGER NOT NULL, 
 #	direction_id INTEGER NOT NULL, 
 #	current_status INTEGER NOT NULL, 
 #	timestamp BIGINT NOT NULL, 
@@ -84,7 +84,7 @@ for entity in feed.entity:
     if entity.HasField('vehicle'):
         d={}
         d['route']          = entity.vehicle.trip.route_id
-        d['schedule_id']    = entity.vehicle.trip.schedule_relationship
+        d['schedule_relationship']    = entity.vehicle.trip.schedule_relationship
         d['direction_id']   = entity.vehicle.trip.direction_id
         d['current_status'] = entity.vehicle.current_status
         d['timestamp']      = entity.vehicle.timestamp
@@ -99,7 +99,7 @@ class vehiclesTable(Base):
     __tablename__='vehicles'
     id             = Column(Integer, nullable=False, primary_key=True)
     route          = Column(String,  nullable=False)
-    schedule_id    = Column(Integer, nullable=False)
+    schedule_relationship = Column(Integer, nullable=False)
     direction_id   = Column(Integer, nullable=False)
     current_status = Column(Integer, nullable=False)
     timestamp      = Column(BIGINT(unsigned=True), nullable=False)
@@ -111,7 +111,7 @@ class vehiclesUpdateTable(Base):
     __tablename__='vehicles_update'
     id             = Column(Integer, nullable=False, primary_key=True)
     route          = Column(String,  nullable=False)
-    schedule_id    = Column(Integer, nullable=False)
+    schedule_relationship = Column(Integer, nullable=False)
     direction_id   = Column(Integer, nullable=False)
     current_status = Column(Integer, nullable=False)
     timestamp      = Column(BIGINT(unsigned=True), nullable=False)

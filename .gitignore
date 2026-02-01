@@ -14,3 +14,4 @@ tests/bussinFR_coverage
 databases/vehicles/database.db
 databases/vehicles/updated.time
 databases/vehicles/*.marker
+test_databases/vehicles/database.db
