@@ -6,6 +6,7 @@ from typing import List
 
 import os
 import time
+import json
 
 # Database imports.
 from sqlalchemy import create_engine, Column, String, Float, Integer, UniqueConstraint
@@ -42,6 +43,10 @@ tags_metadata = [
     {
         "name":"trip-service",
         "description":"Serves out trip updates for a specified stop ID."
+    },
+    {
+        "name":"config-service",
+        "description":"Serves out client configuration."
     }
    ]
 
@@ -292,5 +297,36 @@ async def get_trips(stopID:     str = Query(default=None)):
     db.close()
 
     return db_results
+
+
+# Serve out client configuration that is in config.json file.
+@bussinApp.get("/configService", tags=['config-service'])
+async def get_config():
+    """
+    Returns client configuration.
+    """
+
+    jsonStr=""
+    with open('config.json', 'r') as file:
+        for line in file:
+            sline=line.strip()
+            if sline[0] == '#' :
+                continue
+            jsonStr += sline
+
+    try :
+        res = json.loads(jsonStr)
+    except json.JSONDecodeError as e:
+        # Handle cases where the string is not valid JSON
+        print(f"Error decoding JSON: {e}")
+        print(jsonStr)
+        return {}
+    except TypeError as e:
+        # Handle cases where the input is not a string, bytes, or bytearray
+        print(f"Error: Input must be a string, bytes, or bytearray. {e}")
+        return {}
+
+    return res
+
 
 

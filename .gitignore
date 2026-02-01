@@ -19,4 +19,4 @@ databases/trip_updates/database.db
 databases/trip_updates/updated.time
 databases/trip_updates/*.marker
 test_databases/trip_updates/database.db
-
+tests/config.json
