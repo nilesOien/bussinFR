@@ -5,5 +5,3 @@ export BFR_TEST_MODE=TRUE
 
 uv run pytest --verbose
 
-exit 0
-

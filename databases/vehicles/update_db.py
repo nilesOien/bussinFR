@@ -6,7 +6,7 @@ import requests
 import argparse
 import sys
 from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import create_engine, UniqueConstraint, Column, String, Float, Integer
+from sqlalchemy import create_engine, Column, String, Float, Integer
 from pathlib import Path
 from sqlalchemy import insert, select
 from sqlalchemy.dialects.mysql import BIGINT

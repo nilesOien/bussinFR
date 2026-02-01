@@ -3,8 +3,6 @@
 from fastapi.testclient import TestClient
 from fastapi import status
 
-bussinAPIs:bussinApp
-
 from ..webservices.bussinAPIs import bussinApp
 
 client=TestClient(bussinApp)

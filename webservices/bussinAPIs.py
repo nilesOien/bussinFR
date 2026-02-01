@@ -5,7 +5,6 @@ from pydantic import BaseModel
 from typing import List
 
 import os
-import math
 import time
 
 # Database imports.
@@ -150,10 +149,10 @@ class vehicleServiceResponseClass(BaseModel) :
 
 # Serve out vehicle information.
 @bussinApp.get("/vehicleService", tags=['vehicle-service'], response_model=List[vehicleServiceResponseClass])
-async def get_bus_stops(minLat:     float = Query(default=None),
-                        minLon:     float = Query(default=None),
-                        maxLat:     float = Query(default=None),
-                        maxLon:     float = Query(default=None)):
+async def get_vehicles(minLat:     float = Query(default=None),
+                       minLon:     float = Query(default=None),
+                       maxLat:     float = Query(default=None),
+                       maxLon:     float = Query(default=None)):
     """
     Returns vehicle information for a specified area.
     """

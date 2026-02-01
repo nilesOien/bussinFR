@@ -2,7 +2,7 @@
 
 # Initialize the database.
 
-from sqlalchemy import create_engine, UniqueConstraint, Column, String, Float, Integer
+from sqlalchemy import create_engine, Column, String, Float, Integer
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.dialects.mysql import BIGINT
