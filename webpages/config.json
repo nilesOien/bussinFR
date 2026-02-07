@@ -1,0 +1,29 @@
+#! Config for client information.
+#! The '#!' delineates comments, but aside
+#! from that, it's JSON.
+{
+ #! Web services root URL - where the Python is serving from.
+ "webservicesURL": "http://127.0.0.1:8000",
+ #! Initial map zoom state.
+ "initZoom": 8,
+ #! Max map zoom state.
+ "maxZoom": 14,
+ #! Minimum map zoom state
+ "minZoom": 8,
+ #! Browser tab title
+ "tabTitle": "BussinFR",
+ #! Header.
+ "header": "<big><B>CODOT Busses</b></big><br>This page is in no way affiliated with CDOT",
+ #! Footer.
+ "footer": "In no way is this information guaranteed to be correct",
+ #! Map initial center lat
+ "mapLat": 39.62,
+ #! Map initial center lon
+ "mapLng": -106.38,
+ #! Metric units or not
+ "metric": false,
+ #! Use device location, heading or not
+ "deviceLocation": false,
+ #! Update interval, seconds.
+ "updateSec": 30
+}

@@ -6,13 +6,20 @@ from typing import List
 
 import os
 import time
-import json
 
 # Database imports.
 from sqlalchemy import create_engine, Column, String, Float, Integer, UniqueConstraint
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.mysql import BIGINT
+
+# Add middleware for access.
+from fastapi.middleware.cors import CORSMiddleware
+
+# Set up origins so anyone can get at the APIs.
+origins = ["*"]
+
+
 
 # Small function that waits if a file exists.
 # We do this to be sure we don't access a database while it's
@@ -43,10 +50,6 @@ tags_metadata = [
     {
         "name":"trip-service",
         "description":"Serves out trip updates for a specified stop ID."
-    },
-    {
-        "name":"config-service",
-        "description":"Serves out client configuration."
     }
    ]
 
@@ -61,6 +64,14 @@ bussinApp = FastAPI(title="bussinAPIs",
         },
         version="1.0.0",
         openapi_tags=tags_metadata)
+
+# Add middleware to allow all origins.
+bussinApp.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_methods=["*"],
+        allow_headers=["*"])
+
 
 # Bus stop end point.
 class busStopServiceResponseClass(BaseModel) :
@@ -236,7 +247,7 @@ async def get_vehicles(minLat:     float = Query(default=None),
 # Trip update end point.
 class tripServiceResponseClass(BaseModel) :
     """
-    Pydantic class that defines the format of what the vehicle end point serves out.
+    Pydantic class that defines the format of what the trip update end point serves out.
     """
     route:   str
     arrivaltime: int
@@ -297,36 +308,4 @@ async def get_trips(stopID:     str = Query(default=None)):
     db.close()
 
     return db_results
-
-
-# Serve out client configuration that is in config.json file.
-@bussinApp.get("/configService", tags=['config-service'])
-async def get_config():
-    """
-    Returns client configuration.
-    """
-
-    jsonStr=""
-    with open('config.json', 'r') as file:
-        for line in file:
-            sline=line.strip()
-            if sline[0] == '#' :
-                continue
-            jsonStr += sline
-
-    try :
-        res = json.loads(jsonStr)
-    except json.JSONDecodeError as e:
-        # Handle cases where the string is not valid JSON
-        print(f"Error decoding JSON: {e}")
-        print(jsonStr)
-        return {}
-    except TypeError as e:
-        # Handle cases where the input is not a string, bytes, or bytearray
-        print(f"Error: Input must be a string, bytes, or bytearray. {e}")
-        return {}
-
-    return res
-
-
 

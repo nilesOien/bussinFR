@@ -1,0 +1,53 @@
+<!-- Taken from https://leafletjs.com/examples/quick-start -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Leaf</title>
+
+<!-- Include Leaflet CSS file  -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+<!-- Include Leaflet JavaScript file AFTER Leaflet’s CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+<!-- Set a nice font. -->
+<link rel="stylesheet" href="css/font.css">
+<!-- Set the map size -->
+<link rel="stylesheet" href="css/mapsize.css">
+
+<link rel="stylesheet" href="css/para.css">
+</head>
+
+<body>
+
+<P class="center" id="headerPara"></p>
+
+<P class="center">
+ <div id="map"></div>
+</p>
+
+<P class="center" id="footerPara"></p>
+
+<P class="center" id="updatePara"></p>
+
+<P class="center" id="infoPara"></p>
+
+<P class="center">
+ <input type="button" value="Bus" onClick="doBus();">
+</p>
+
+<script src="js/global.js"></script>
+<script src="js/drawmap.js"></script>
+<script src="js/bounder.js"></script>
+<script src="js/start.js"></script>
+
+</body>
+</html>
+
+

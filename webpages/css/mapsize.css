@@ -1,0 +1,10 @@
+/*
+ * Set the size of the map div and center it.
+ */
+#map {
+       height: 900px;
+       width: 900px;
+       margin-left: auto;
+       margin-right: auto;
+     }
+
