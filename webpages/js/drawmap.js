@@ -1,4 +1,8 @@
 
+function mapHasChanged(){
+ vehicleUpdateSec=0; // Trigger redraw of vehicles.
+ return;
+}
 
 async function drawmap(){
 
@@ -48,6 +52,13 @@ async function drawmap(){
  });
 
  tileLayer.addTo(map);
+
+ // Add the listener function mapHasChanged() for zoom state changes and recentering.
+ map.on('zoomend', mapHasChanged);
+ map.on('moveend', mapHasChanged);
+
+ // Start the drawing of vehicles here (after config has loaded)
+ drawVehicles();
 
  return;
 

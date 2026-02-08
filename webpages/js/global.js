@@ -7,3 +7,6 @@ var config;
 // The vehicle markers we put on the map.
 var vehicleMarkers = new Array();
 
+// The number of seconds until we update the vehicles on the map.
+var vehicleUpdateSec=0;
+

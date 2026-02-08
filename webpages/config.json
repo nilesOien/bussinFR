@@ -13,7 +13,7 @@
  #! Browser tab title
  "tabTitle": "BussinFR",
  #! Header.
- "header": "<big><B>CODOT Busses</b></big><br>This page is in no way affiliated with CDOT",
+ "header": "<big><B>CDOT Busses</b></big><br>This page is in no way affiliated with CDOT",
  #! Footer.
  "footer": "In no way is this information guaranteed to be correct",
  #! Map initial center lat
@@ -25,5 +25,9 @@
  #! Use device location, heading or not
  "deviceLocation": false,
  #! Update interval, seconds.
- "updateSec": 30
+ "updateSec": 30,
+ #! Minimum map zoom state to show vehicles
+ "minZoomForVehicles": 8,
+ #! Maximum number of vehicles to even try to draw on map
+ "maxVehicles": 50
 }
