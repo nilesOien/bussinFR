@@ -1,4 +1,3 @@
-
 /**
  * Calculates the distance between two geographical points using the Haversine formula.
  *
@@ -55,7 +54,7 @@ async function doBus(){
     let responseText = await response.text();
 
     try {
-      vehicles = JSON.parse(responseText);
+      var vehicles = JSON.parse(responseText);
     } catch (error) {
       alert("Error parsing vehicle JSON:", error.message);
       return;
@@ -81,15 +80,61 @@ async function doBus(){
     //  }
     // ]
 
-    vehiclePopups = new Array();
+    const tmOptions = {
+      hour: 'numeric',
+      minute: 'numeric',
+      // second: 'numeric',
+      timeZoneName: 'short'
+    };
+
+    let vehicleLocs = new Array();
     for (const vehicle of vehicles){
-      var vPop = L.popup()
-       .setLatLng([vehicle['lat'], vehicle['lon']])
-       .setContent(vehicle['route'] + " bearing " + vehicle['bearing'])
-       .openOn(map);
-      vehiclePopups.push(vPop);
+       pos = [vehicle['lat'], vehicle['lon']];
+       im='Yes';
+       if (vehicle['current_status'] != 2){
+        im='No';
+       }
+
+       const dateObject = new Date(vehicle['timestamp'] * 1000); 
+       let tmStr = dateObject.toLocaleString('en-US', tmOptions);
+
+       status = vehicle['route'] + " bearing " + vehicle['bearing'] +
+           "<br>Time : " + tmStr + "<br>In motion : " + im;
+
+       v = { "pos": pos, "status": status, "bearing": vehicle['bearing'] };
+
+      vehicleLocs.push(v);
     }
 
+
+    undoBus(); // Remove any existing markers
+    vehicleLocs.forEach(vehicleLoc => {
+
+           af=arrow(vehicleLoc['bearing']);
+           fullFile='../arrows/black/' + af;
+           var vehicleIcon = L.icon({
+             iconUrl: fullFile, // '../icons/stop.png',
+             iconSize: [20, 20],
+             iconAnchor: [10, 10],
+             popupAnchor: [0, -10]
+           });
+
+           m = L.marker(vehicleLoc['pos'], {icon: vehicleIcon}) // Create a new marker
+                  .addTo(map) // Add the marker to the map
+                  .bindPopup(vehicleLoc['status']); // Bind a clickable popup
+           vehicleMarkers.push(m);
+                });
     return;
+
+}
+
+function undoBus() {
+
+ vehicleMarkers.forEach(vehicleMarker => {
+  vehicleMarker.remove();
+ });                      
+ vehicleMarkers = new Array();
+
+ return;
 
 }
