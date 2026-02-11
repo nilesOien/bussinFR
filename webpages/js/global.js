@@ -10,3 +10,9 @@ var vehicleMarkers = new Array();
 // The number of seconds until we update the vehicles on the map.
 var vehicleUpdateSec=0;
 
+// The station details we got from the server.
+var stationDetails;
+
+// The station marker objects.
+var stationMarkers = new Array();
+

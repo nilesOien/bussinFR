@@ -88,7 +88,7 @@ async function drawVehicles(){
        let tmStr=tArray[0];
        let tRel=tArray[1];
 
-       status = vehicle['route'] + " bearing " + vehicle['bearing'] +
+       status = '<B>Route ' + vehicle['route'] + '</b>' + " bearing " + vehicle['bearing'] +
            "<br>Time : " + tmStr + "<br>" + tRel + "<br>In motion : " + im;
 
        v = { "pos": pos, "status": status, "bearing": vehicle['bearing'], "current_status": vehicle['current_status'] };
@@ -114,7 +114,7 @@ async function drawVehicles(){
              popupAnchor: [0, -10]
            });
 
-           m = L.marker(vehicleLoc['pos'], {icon: vehicleIcon}) // Create a new marker
+           let m = L.marker(vehicleLoc['pos'], {icon: vehicleIcon}) // Create a new marker
                   .addTo(map) // Add the marker to the map
                   .bindPopup(vehicleLoc['status']); // Bind a clickable popup with the status message we put together
            vehicleMarkers.push(m);

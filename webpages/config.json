@@ -7,7 +7,7 @@
  #! Initial map zoom state.
  "initZoom": 8,
  #! Max map zoom state.
- "maxZoom": 14,
+ "maxZoom": 15,
  #! Minimum map zoom state
  "minZoom": 8,
  #! Browser tab title
@@ -29,5 +29,9 @@
  #! Minimum map zoom state to show vehicles
  "minZoomForVehicles": 8,
  #! Maximum number of vehicles to even try to draw on map
- "maxVehicles": 50
+ "maxVehicles": 50,
+ #! Minimum map zoom state to show stations
+ "minZoomForStations": 12,
+ #! Maximum number of vehicles to even try to draw on map
+ "maxStations": 100
 }

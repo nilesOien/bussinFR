@@ -1,6 +1,7 @@
 
 function mapHasChanged(){
  vehicleUpdateSec=0; // Trigger redraw of vehicles.
+ drawStops(); // Draw the stops directly.
  return;
 }
 
@@ -59,6 +60,8 @@ async function drawmap(){
 
  // Start the drawing of vehicles here (after config has loaded)
  drawVehicles();
+ // Similar for stops.
+ drawStops();
 
  return;
 
