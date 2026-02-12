@@ -76,7 +76,7 @@ async function drawStops(){
            let stationHTML = '<B>' + stationDetail['stopname'] + "</b><br>ID " + stationDetail['stopid'] + '<br>' +
                              stationDetail['stopdesc'] + '<br>';
 
-           stationHTML += "<input type=\"button\" value=\"Monitor\" onClick=monitorStop(" + indx + ")>";
+           stationHTML += "<input type=\"button\" value=\"Monitor\" onClick=monitorStart(" + indx + ")>";
 
            let m = L.marker([stationDetail['lat'], stationDetail['lon']], {icon: stationIcon}) // Create a new marker
                   .addTo(map) // Add the marker to the map

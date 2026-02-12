@@ -16,3 +16,12 @@ var stationDetails;
 // The station marker objects.
 var stationMarkers = new Array();
 
+// Are we monitoring a station?
+var monitoring=false;
+
+// Monitored station details. This will be a dict.
+var monitoredStationDetails;
+
+// Update seconds for monitoring
+var monitorUpdateSec = 0;
+

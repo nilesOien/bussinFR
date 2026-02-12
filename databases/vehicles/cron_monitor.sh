@@ -30,7 +30,7 @@ proc="./fetchVehicleUpdates.sh $envFile $BFR_AGENCY_NAME"
 echo $pn : Looking for process :
 echo $proc
 
-numRunning=`ps aux | grep "$proc" | grep -v grep | wc -l`
+numRunning=`ps aux | grep $USER | grep "$proc" | grep -v grep | wc -l`
 echo $numRunning such processes running
 
 if [ "$numRunning" -ne 0 ]
