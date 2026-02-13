@@ -13,13 +13,16 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.mysql import BIGINT
 
-# Add middleware for access.
-from fastapi.middleware.cors import CORSMiddleware
+### Add middleware for access.
+###from fastapi.middleware.cors import CORSMiddleware
 
-# Set up origins so anyone can get at the APIs.
-origins = ["*"]
+### Set up origins so anyone can get at the APIs.
+###origins = ["*"]
 
-
+# Now we do this instead :
+from fastapi.staticfiles import StaticFiles
+# so we can serve out the static files on the same port so
+# there's no issue that needs middleware.
 
 # Small function that waits if a file exists.
 # We do this to be sure we don't access a database while it's
@@ -55,6 +58,7 @@ tags_metadata = [
 
 # Get a FastAPI application object
 bussinApp = FastAPI(title="bussinAPIs",
+        root_path="/cdot",                  # Because we're deploying behind a gateway
         summary="End points for bussinFR.",
         description="Used by javaScript to get the data.",
         contact={
@@ -65,12 +69,12 @@ bussinApp = FastAPI(title="bussinAPIs",
         version="1.0.0",
         openapi_tags=tags_metadata)
 
-# Add middleware to allow all origins.
-bussinApp.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_methods=["*"],
-        allow_headers=["*"])
+### Add middleware to allow all origins.
+###bussinApp.add_middleware(
+###        CORSMiddleware,
+###        allow_origins=origins,
+###        allow_methods=["*"],
+###        allow_headers=["*"])
 
 
 # Bus stop end point.
@@ -308,4 +312,22 @@ async def get_trips(stopID:     str = Query(default=None)):
     db.close()
 
     return db_results
+
+
+
+
+# Mount for the static HTML/css/javaScript/favicon
+# In the call below :
+#
+# * The first argument ("/") is the URL path where the files will be exposed,
+#   so it will pop up as "http://localhost:8000/"
+# * The second argument is the actual directory on this server,
+#   and setting html=True will serve out index.html by default.
+# * The third argument is an internal name that can be used for URL
+#   generation in templates, often with the url_for function.
+#
+# Note that order matters. FastAPI matches requests *sequentially* so
+# we define this last so that it will try the API end points first.
+bussinApp.mount("/", StaticFiles(directory="../webpages", html=True), name="webpages")
+
 

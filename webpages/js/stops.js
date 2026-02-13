@@ -62,7 +62,7 @@ async function drawStops(){
     }
 
     var stationIcon = L.icon({
-      iconUrl: '../icons/stop.png',
+      iconUrl: config['webservicesURL'] +  '/icons/stop.png',
       iconSize: [20, 20],
       iconAnchor: [10, 10],
       popupAnchor: [0, -10]

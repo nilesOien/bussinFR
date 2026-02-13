@@ -3,7 +3,8 @@
 #! from that, it's JSON.
 {
  #! Web services root URL - where the Python is serving from.
- "webservicesURL": "http://127.0.0.1:8000",
+ #! "webservicesURL": "http://127.0.0.1:8000",
+ "webservicesURL": "http://192.168.1.132/cdot",
  #! Initial map zoom state.
  "initZoom": 8,
  #! Max map zoom state.

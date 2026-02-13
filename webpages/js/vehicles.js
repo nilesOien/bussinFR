@@ -101,10 +101,10 @@ async function drawVehicles(){
     // Go through the information in vehicleLocs and put the markers on the map.
     vehicleLocs.forEach(vehicleLoc => {
 
-           fullFile='icons/stopped_bus.png';
+           fullFile= config['webservicesURL'] + '/icons/stopped_bus.png';
            if (vehicleLoc['current_status'] == 2){
                af=arrow(vehicleLoc['bearing']);
-               fullFile='../arrows/black/' + af;
+               fullFile= config['webservicesURL'] + '/arrows/black/' + af;
            }
 
            var vehicleIcon = L.icon({
