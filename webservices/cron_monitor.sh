@@ -15,6 +15,22 @@ fi
 
 pn=`basename $0`
 
+# Get the username. Try $USER, $LOGNAME and the end of $HOME
+# in that order.
+if [ -z "$USER" ]
+then
+ if [ -z "$LOGNAME" ]
+ then
+  # Try to get it from the home dir name
+  un=`basename "$HOME"`
+ else
+  # Use LOGNAME
+  un="$LOGNAME"
+ fi
+else
+ un="$USER"
+fi
+
 # Get the environment file from the command line and source it.
 if [ "$#" -ne 1 ]
 then
@@ -33,7 +49,7 @@ source "$envFile"
 
 cd "$BFR_TOP_DIR"/webservices
 
-numRunning=`ps aux | grep $USER | grep uvicorn | grep -v grep | wc -l`
+numRunning=`ps aux | grep "$un" | grep uvicorn | grep -v grep | wc -l`
 echo $numRunning uvicorn processes running
 
 if [ "$numRunning" -ne 0 ]
@@ -42,7 +58,7 @@ then
 fi
 
 echo Starting uvicorn
-./start_server.sh &> /dev/null &
+./start_server.sh ../environment.vars &> /dev/null &
 
 exit 0
 

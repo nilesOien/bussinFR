@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+# Needed to run under cron : If the file
+# $HOME/.local/bin/env exists then
+# source it so that uv will be found.
+if [ -f "$HOME/.local/bin/env" ]
+then
+ source "$HOME/.local/bin/env"
+fi
+
 pn=`basename $0`
 
 # Get the environment file from the command line and source it.

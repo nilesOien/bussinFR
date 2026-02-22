@@ -15,6 +15,22 @@ fi
 
 pn=`basename $0`
 
+# Get the username. Try $USER, $LOGNAME and the end of $HOME
+# in that order.
+if [ -z "$USER" ]
+then
+ if [ -z "$LOGNAME" ]
+ then
+  # Try to get it from the home dir name
+  un=`basename "$HOME"`
+ else
+  # Use LOGNAME
+  un="$LOGNAME"
+ fi
+else
+ un="$USER"
+fi
+
 # Get the environment file from the command line and source it.
 if [ "$#" -ne 1 ]
 then
@@ -33,12 +49,7 @@ source "$envFile"
 
 cd "$BFR_TOP_DIR"/databases/trip_updates
 
-proc="./fetchTripUpdates.sh $envFile $BFR_AGENCY_NAME"
-
-echo $pn : Looking for process :
-echo $proc
-
-numRunning=`ps aux | grep $USER | grep "$proc" | grep -v grep | wc -l`
+numRunning=`ps aux | grep "$un" | grep fetchTripUpdates.sh | grep -v grep | wc -l`
 echo $numRunning such processes running
 
 if [ "$numRunning" -ne 0 ]
