@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Update the bus stop database.
+# May want to run this in cron like so :
+# 0 23 * * sat $HOME/bussinFR/databases/stops/dbUpdate.sh $HOME/bussinFR/environment.vars > $HOME/bussinFR/databases/stops/dbUpdate.log 2>&1;
+# for weekly updates.
+#
+# Needed to run under cron : If the file
+# $HOME/.local/bin/env exists then
+# source it so that uv will be found.
+if [ -f "$HOME/.local/bin/env" ]
+then
+ source "$HOME/.local/bin/env"
+fi
+
 # Set program name and note start time.
 pn=`basename $0`
 startTm=`date --utc +%s`

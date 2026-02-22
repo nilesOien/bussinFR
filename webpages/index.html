@@ -1,10 +1,10 @@
-<!-- Taken from https://leafletjs.com/examples/quick-start -->
+<!-- Developed from https://leafletjs.com/examples/quick-start -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
-<title>Leaf</title>
+<title>bussinFR</title>
 
 <!-- Include Leaflet CSS file  -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -40,6 +40,16 @@
 
 <P class="center" id="headerPara"></p>
 
+
+<P class="center">
+<table class="center"><tr>
+		<td>Moving bus<br><img src="arrows/arrow_090.png"></td>
+		<td>Stopped bus<br><img src="icons/stopped_bus.png"></td>
+		<td>Bus station<br><img src="icons/stop.png"></td>
+</tr>
+</table>
+</p>
+
 <P class="center">
  <div id="map"></div>
 </p>
@@ -57,6 +67,18 @@
 <P class="center" id="monitorPara"></p>
 
 <P class="center" id="monitorUpdatePara"></p>
+
+<hr>
+
+<P class="center">
+Links<br>
+<table class="center"><tr>
+	<td><A href="https://github.com/nilesOien/bussinFR" target="_blank">github</a></td>
+	<td><A href="./docs" target="_blank">swagger docs</a></td>
+	<td><A href="./redoc" target="_blank">redoc</a></td>
+	<td><A href="./bussinFR_coverage/index.html" target="_blank">test coverage</a></td>
+</tr></table>
+</p>
 
 <script src="js/start.js"></script>
 

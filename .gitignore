@@ -24,3 +24,5 @@ iconFactory/output
 iconFactory/stopped_bus.png
 iconFactory/stop.png
 iconFactory/up.png 
+webpages/bussinFR_coverage
+*.log

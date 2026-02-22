@@ -56,9 +56,16 @@ tags_metadata = [
     }
    ]
 
+try:
+    agency_name = os.environ["BFR_AGENCY_NAME"]
+except KeyError:
+    print("Error: BFR_AGENCY_NAME environment variable not set.")
+    quit()
+agency_name=agency_name.lower()
+
 # Get a FastAPI application object
 bussinApp = FastAPI(title="bussinAPIs",
-        root_path="/cdot",                  # Because we're deploying behind a gateway
+        root_path="/" + agency_name,                  # Because we're deploying behind a gateway. Must match nginx settings.
         summary="End points for bussinFR.",
         description="Used by javaScript to get the data.",
         contact={
@@ -314,8 +321,6 @@ async def get_trips(stopID:     str = Query(default=None)):
     return db_results
 
 
-
-
 # Mount for the static HTML/css/javaScript/favicon
 # In the call below :
 #
@@ -328,6 +333,7 @@ async def get_trips(stopID:     str = Query(default=None)):
 #
 # Note that order matters. FastAPI matches requests *sequentially* so
 # we define this last so that it will try the API end points first.
-bussinApp.mount("/", StaticFiles(directory="../webpages", html=True), name="webpages")
+# Follow sym links to show test coverage results.
+bussinApp.mount("/", StaticFiles(directory="../webpages", html=True, follow_symlink=True), name="webpages")
 
 

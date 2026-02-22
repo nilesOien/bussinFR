@@ -2,8 +2,16 @@
 
 # Script to be called from cron to keep trip fetches to the database
 # running. Run in cron something like this :
-# * * * * * $HOME/bussinFR/databases/trip_updates/cron_monitor.sh $HOME/bussinFR/environment.vars &> /dev/null
+# * * * * * $HOME/bussinFR/databases/trip_updates/cron_monitor.sh $HOME/bussinFR/environment.vars > /dev/null 2>&1;
 # To check every minute that the fetch is running.
+
+# Needed to run under cron : If the file
+# $HOME/.local/bin/env exists then
+# source it so that uv will be found.
+if [ -f "$HOME/.local/bin/env" ]
+then
+ source "$HOME/.local/bin/env"
+fi
 
 pn=`basename $0`
 
