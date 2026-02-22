@@ -1,0 +1,71 @@
+# As delivered, there used to be a link in this
+# directory like so :
+# root@bussin-ubuntu-s-2vcpu-4gb-120gb-intel-sfo2-01:/etc/nginx/sites-enabled# ls -l
+# lrwxrwxrwx 1 root root 34 Feb 20 21:12 default -> /etc/nginx/sites-available/default
+# That was removed.
+    server {
+        listen       80;
+        server_name  bussinfr.net www.bussinfr.net;
+
+        #charset koi8-r;
+
+	#access_log  logs/host.access.log  main;
+
+        # This reverse proxy added by Niles.
+        # The /cdot location will go to port 8000,
+        # which is our local uvicorn instance.
+        location /cdot/ {
+         # The trailing "/" on the line below is key to "/cdot" not being
+         # passed back to the port
+         proxy_pass http://localhost:8000/;
+         index index.html;
+         proxy_set_header Host $host;
+         proxy_set_header X-Real-IP $remote_addr;
+        }
+
+        # Niles : Serve out favicon
+        location = /favicon.ico {
+          alias /var/www/html/favicon.ico;
+          access_log off;
+          log_not_found off;
+        }
+
+        # Everything else
+        location / {
+            root   /var/www/html;
+            index  index.html index.htm;
+        }
+
+        error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /var/www/html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+

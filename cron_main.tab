@@ -1,0 +1,12 @@
+# Make sure uvicorn is serving.
+* * * * * $HOME/bussinFR/webservices/cron_monitor.sh $HOME/bussinFR/environment.vars > /dev/null 2>&1;
+
+# Vehicle location fetches
+* * * * * $HOME/bussinFR/databases/vehicles/cron_monitor.sh $HOME/bussinFR/environment.vars > /dev/null 2>&1;
+
+# Trip update fetches.
+* * * * * $HOME/bussinFR/databases/trip_updates/cron_monitor.sh $HOME/bussinFR/environment.vars > /dev/null 2>&1;
+
+# Weekly bus stop updates.
+0 15 * * sat $HOME/bussinFR/databases/stops/dbUpdate.sh $HOME/bussinFR/environment.vars > $HOME/bussinFR/databases/stops/dbUpdate.log 2>&1;
+
