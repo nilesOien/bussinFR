@@ -52,7 +52,7 @@ tags_metadata = [
     },
     {
         "name":"trip-service",
-        "description":"Serves out trip updates for a specified stop ID."
+        "description":"Serves out trip updates for a specified stop ID. Union Station in Denver has stop ID 34343 which may be a good test for that region."
     }
    ]
 
