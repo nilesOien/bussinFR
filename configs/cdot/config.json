@@ -3,23 +3,23 @@
 #! from that, it's JSON.
 {
  #! Web services root URL - where the Python is serving from.
- "webservicesURL": "https://bussinfr.net/rtd",
+ "webservicesURL": "https://bussinfr.net/cdot",
  #! Initial map zoom state.
- "initZoom": 14,
+ "initZoom": 8,
  #! Max map zoom state.
- "maxZoom": 18,
+ "maxZoom": 15,
  #! Minimum map zoom state
- "minZoom": 10,
+ "minZoom": 8,
  #! Browser tab title
  "tabTitle": "BussinFR",
  #! Header.
- "header": "<big><B>RTD Busses</b></big><br>This page is in no way affiliated with RTD",
+ "header": "<big><B>CDOT Busses</b></big><br>This page is in no way affiliated with CDOT",
  #! Footer.
  "footer": "In no way is this information guaranteed to be correct",
  #! Map initial center lat
- "mapLat": 40.075077,
+ "mapLat": 39.62,
  #! Map initial center lon
- "mapLng": -105.207176,
+ "mapLng": -106.38,
  #! Metric units or not
  "metric": false,
  #! Use device location, heading or not
@@ -27,11 +27,11 @@
  #! Update interval, seconds.
  "updateSec": 30,
  #! Minimum map zoom state to show vehicles
- "minZoomForVehicles": 11,
+ "minZoomForVehicles": 8,
  #! Maximum number of vehicles to even try to draw on map
- "maxVehicles": 200,
+ "maxVehicles": 50,
  #! Minimum map zoom state to show stations
  "minZoomForStations": 12,
  #! Maximum number of vehicles to even try to draw on map
- "maxStations": 150
+ "maxStations": 100
 }

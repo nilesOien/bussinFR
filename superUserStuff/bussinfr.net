@@ -4,7 +4,6 @@
 # lrwxrwxrwx 1 root root 34 Feb 20 21:12 default -> /etc/nginx/sites-available/default
 # That was removed.
     server {
-        listen       80;
         server_name  bussinfr.net www.bussinfr.net;
 
         #charset koi8-r;
@@ -18,6 +17,15 @@
          # The trailing "/" on the line below is key to "/cdot" not being
          # passed back to the port
          proxy_pass http://localhost:8000/;
+         index index.html;
+         proxy_set_header Host $host;
+         proxy_set_header X-Real-IP $remote_addr;
+        }
+
+	location /rtd/ {
+         # The trailing "/" on the line below is key to "/cdot" not being
+         # passed back to the port
+         proxy_pass http://localhost:8001/;
          index index.html;
          proxy_set_header Host $host;
          proxy_set_header X-Real-IP $remote_addr;
@@ -67,5 +75,25 @@
         #location ~ /\.ht {
         #    deny  all;
         #}
-    }
+    
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/bussinfr.net/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/bussinfr.net/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
+}
+
+
+    server {
+    if ($host = bussinfr.net) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen       80;
+        server_name  bussinfr.net www.bussinfr.net;
+    return 404; # managed by Certbot
+
+
+}

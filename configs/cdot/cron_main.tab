@@ -8,5 +8,5 @@
 * * * * * $HOME/bussinFR/databases/trip_updates/cron_monitor.sh $HOME/bussinFR/environment.vars > $HOME/bussinFR/databases/trip_updates/cron_monitor.log 2>&1;
 
 # Weekly bus stop updates.
-30 15 * * sat $HOME/bussinFR/databases/stops/dbUpdate.sh $HOME/bussinFR/environment.vars > $HOME/bussinFR/databases/stops/dbUpdate.log 2>&1;
+0 15 * * sat $HOME/bussinFR/databases/stops/dbUpdate.sh $HOME/bussinFR/environment.vars > $HOME/bussinFR/databases/stops/dbUpdate.log 2>&1;
 

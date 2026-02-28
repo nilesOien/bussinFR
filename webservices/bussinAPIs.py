@@ -8,7 +8,7 @@ import os
 import time
 
 # Database imports.
-from sqlalchemy import create_engine, Column, String, Float, Integer, UniqueConstraint
+from sqlalchemy import create_engine, Column, String, Float, Integer, UniqueConstraint, or_
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.mysql import BIGINT
@@ -48,7 +48,7 @@ tags_metadata = [
     },
     {
         "name":"vehicle-service",
-        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped"
+        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped. Can also specify a comma separated list of routes (default is all routes)"
     },
     {
         "name":"trip-service",
@@ -183,7 +183,8 @@ class vehicleServiceResponseClass(BaseModel) :
 async def get_vehicles(minLat:     float = Query(default=None),
                        minLon:     float = Query(default=None),
                        maxLat:     float = Query(default=None),
-                       maxLon:     float = Query(default=None)):
+                       maxLon:     float = Query(default=None),
+                       routesCSV:  str   = Query(default=None)):
     """
     Returns vehicle information for a specified area.
     """
@@ -239,6 +240,42 @@ async def get_vehicles(minLat:     float = Query(default=None),
 
     if maxLon is not None :
         query = query.filter(vehiclesTable.lon <= maxLon)
+
+    # Routes is a comma separated list of routes of interest.
+    # Default is to serve all routes, but if this is specified,
+    # the only serve these routes.
+
+    if routesCSV is not None :
+        routesCSV = routesCSV.upper()  # Convert entered route list to upper case
+        routesCSV = "".join(routesCSV.split()) # Remove whitespaces
+        routes=routesCSV.split(',')
+        if len(routes) > 0 :
+            # This next part is a bit tricky.
+            # If the caller specified routesCSV="bolt, 205"
+            # then routes is now the list [ "BOLT", "205" ].
+            #
+            # The * operator (the unpacking operator)
+            # when used in a function call
+            # takes an iterable (like a list or tuple) and
+            # unpacks its elements as separate positional
+            # arguments, so for example we can :
+            # >>> x=[1,2,3]  # A list
+            # >>> print(x)   #
+            # [1, 2, 3]      # Printed the list
+            # >>> print(*x)  #
+            # 1 2 3          # Printed the list as positional parameters
+            #
+            # So we can pass the elements of a list
+            # to the function as positional arguments
+            # (in this case the or_()
+            # function).
+            #
+            # So make the list of filters that we want to throw at or_() :
+            route_filters = [vehiclesTable.route == route for route in routes]
+            # And then use the unpacking operator to throw them all at or_()
+            # as positional arguments :
+            query = query.filter(or_(*route_filters))
+
 
     query = query.order_by(vehiclesTable.lat)
 

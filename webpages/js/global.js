@@ -25,3 +25,6 @@ var monitoredStationDetails;
 // Update seconds for monitoring
 var monitorUpdateSec = 0;
 
+// Comma separated list of routes, if any
+var routesCSV = "";
+

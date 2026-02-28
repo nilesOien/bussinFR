@@ -30,6 +30,9 @@ async function drawVehicles(){
 
     let url=config['webservicesURL'] + "/vehicleService?minLat=" +
       sw.lat + "&minLon=" + sw.lng + "&maxLat=" + ne.lat + "&maxLon=" + ne.lng;
+    if (routesCSV.length > 0){
+      url += "&routesCSV=" + routesCSV;
+    }
 
     let response = await fetch(url);
 
