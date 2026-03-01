@@ -5,6 +5,14 @@
 # * * * * * $HOME/bussinFR/databases/trip_updates/cron_monitor.sh $HOME/bussinFR/environment.vars > /dev/null 2>&1;
 # To check every minute that the fetch is running.
 
+# Check that crontab is installed, exit if not.
+cronCount=`crontab -l 2> /dev/null | wc -l`
+if [ "$cronCount" -eq 0 ]
+then
+ echo No crontab, exiting
+ exit 0
+fi
+
 # Needed to run under cron : If the file
 # $HOME/.local/bin/env exists then
 # source it so that uv will be found.

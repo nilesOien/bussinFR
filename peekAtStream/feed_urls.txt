@@ -1,0 +1,6 @@
+https://open-data.rtd-denver.com/files/gtfs-rt/rtd/Alerts.pb
+https://open-data.rtd-denver.com/files/gtfs-rt/rtd/TripUpdate.pb
+https://open-data.rtd-denver.com/files/gtfs-rt/rtd/VehiclePosition.pb
+https://open-data.rtd-denver.com/files/gtfs-rt/cdot/Bustang_TripUpdate.pb
+https://open-data.rtd-denver.com/files/gtfs-rt/cdot/Bustang_VehiclePosition.pb
+

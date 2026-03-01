@@ -6,6 +6,7 @@ from typing import List
 
 import os
 import time
+import datetime
 
 # Database imports.
 from sqlalchemy import create_engine, Column, String, Float, Integer, UniqueConstraint, or_
@@ -48,7 +49,7 @@ tags_metadata = [
     },
     {
         "name":"vehicle-service",
-        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped. Can also specify a comma separated list of routes (default is all routes)"
+        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped. Can also specify a comma separated list of routes (default is all routes). Internally spaces are removed from the list of routes and it is converted to upper case, so that \"bolt, jump\" becomes \"BOLT,JUMP\"."
     },
     {
         "name":"trip-service",
@@ -344,8 +345,14 @@ async def get_trips(stopID:     str = Query(default=None)):
     # Set up query but not all columns - only selected ones.
     query = db.query(tripsTable).with_entities(tripsTable.route, tripsTable.arrivaltime)
 
-    # Add filter.
+    # Add filter on stop ID.
     query = query.filter(tripsTable.stopid == stopID)
+
+    # Also add a filter so that we only serve out
+    # arrival times that are in the future.
+    current_utc_time = datetime.datetime.now(datetime.timezone.utc)
+    current_unix_time = int(current_utc_time.timestamp())
+    query = query.filter(tripsTable.arrivaltime >= current_unix_time)
 
     query = query.order_by(tripsTable.arrivaltime)
 
