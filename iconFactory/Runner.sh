@@ -19,8 +19,13 @@ do
  echo $angle
 
  magick up.png -distort SRT "$angle" output/arrow_"$angle".png
+
+ magick output/arrow_"$angle".png -fill none +opaque "#000000" output/arrow_"$angle".png
+
+ magick output/arrow_"$angle".png -gravity Center -crop 128x128 output/arrow_"$angle".png
+
  magick output/arrow_"$angle".png -resize 20x20 output/arrow_"$angle".png
- magick output/arrow_"$angle".png -transparent white output/arrow_"$angle".png
+
 
  angle=`expr "$angle" + 10`
 done

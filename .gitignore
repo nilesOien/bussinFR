@@ -26,3 +26,7 @@ iconFactory/stop.png
 iconFactory/up.png 
 webpages/bussinFR_coverage
 *.log
+environment.vars
+cron_main.tab
+webpages/config.json
+

@@ -31,26 +31,9 @@ do
  fi
 done
 
-if [ ! -f ../cron_main.tab ]
-then
- cp -v ../configs/"$conf"/cron_main.tab ../cron_main.tab
-else
- echo $pn : Already have ../cron_main.tab
-fi
-
-if [ ! -f ../environment.vars ]
-then
- cp -v ../configs/"$conf"/environment.vars ../environment.vars
-else
- echo $pn Already have ../environment.vars
-fi
-
-if [ ! -f ../webpages/config.json ]
-then
- cp -v ./configs/"$conf"/config.json ../webpages/config.json
-else
- echo $pn : Already have ../webpages/config.json
-fi
+cp -v ../configs/"$conf"/cron_main.tab ../cron_main.tab
+cp -v ../configs/"$conf"/environment.vars ../environment.vars
+cp -v ./configs/"$conf"/config.json ../webpages/config.json
 
 # Check that we have uv installed.
 which uv &> /dev/null
@@ -104,6 +87,11 @@ then
 else
  echo Unit tests for coverage have already been run
 fi
+
+# Create the stop database.
+cd ../databases/stops
+rm -f database.db
+./dbUpdate.sh ../../environment.vars
 
 exit 0
 
