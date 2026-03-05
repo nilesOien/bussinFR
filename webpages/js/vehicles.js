@@ -107,7 +107,7 @@ async function drawVehicles(){
            fullFile= config['webservicesURL'] + '/icons/stopped_bus.png';
            if (vehicleLoc['current_status'] == 2){
                af=arrow(vehicleLoc['bearing']);
-               fullFile= config['webservicesURL'] + '/arrows/black/' + af;
+               fullFile= config['webservicesURL'] + '/arrows/' + af;
            }
 
            var vehicleIcon = L.icon({
