@@ -350,9 +350,11 @@ async def get_trips(stopID:     str = Query(default=None)):
 
     # Also add a filter so that we only serve out
     # arrival times that are in the future.
-    current_utc_time = datetime.datetime.now(datetime.timezone.utc)
-    current_unix_time = int(current_utc_time.timestamp())
-    query = query.filter(tripsTable.arrivaltime >= current_unix_time)
+    # Don't do this in test mode.
+    if not testMode :
+        current_utc_time = datetime.datetime.now(datetime.timezone.utc)
+        current_unix_time = int(current_utc_time.timestamp())
+        query = query.filter(tripsTable.arrivaltime >= current_unix_time)
 
     query = query.order_by(tripsTable.arrivaltime)
 
