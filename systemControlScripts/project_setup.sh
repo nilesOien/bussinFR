@@ -33,7 +33,7 @@ done
 
 cp -v ../configs/"$conf"/cron_main.tab ../cron_main.tab
 cp -v ../configs/"$conf"/environment.vars ../environment.vars
-cp -v ./configs/"$conf"/config.json ../webpages/config.json
+cp -v ../configs/"$conf"/config.json ../webpages/config.json
 
 # Check that we have uv installed.
 which uv &> /dev/null
