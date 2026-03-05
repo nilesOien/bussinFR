@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from fastapi.testclient import TestClient
-from fastapi import status
 
 from ..webservices.bussinAPIs import bussinApp
 

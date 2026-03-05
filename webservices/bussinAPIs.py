@@ -45,11 +45,11 @@ tags_metadata = [
     },
     {
         "name":"bus-stop-service",
-        "description":"Serves out locations and descriptions of bus stops in a specified area. For RTD, test with a minimum latitude of 40 (Baseline road)"
+        "description":"Serves out locations and descriptions of bus stops in a specified area. For RTD, test with a minimum latitude of 40 (Baseline road). A hard coded limit of 1000 stops returned is imposed."
     },
     {
         "name":"vehicle-service",
-        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped. Can also specify a comma separated list of routes (default is all routes). Internally spaces are removed from the list of routes and it is converted to upper case, so that \"bolt, jump\" becomes \"BOLT,JUMP\". To test for RTD, enter a minimum latitude of 40 (Baseline road)."
+        "description":"Serves out locations and descriptions of vehicles in a specified area. For the current_status field, 2=Moving 1=Stopped. Can also specify a comma separated list of routes (default is all routes). Internally spaces are removed from the list of routes and it is converted to upper case, so that \"bolt, jump\" becomes \"BOLT,JUMP\". To test for RTD, enter a minimum latitude of 40 (Baseline road). A hard coded limit of 1000 vehicles returned is imposed."
     },
     {
         "name":"trip-service",
@@ -153,7 +153,12 @@ async def get_bus_stops(minLat:     float = Query(default=None),
     if maxLon is not None :
         query = query.filter(stopsTable.lon <= maxLon)
 
-    query = query.order_by(stopsTable.lat)
+    # In the interests of speed if someone uses the API directly,
+    # decided not to do this.
+    #query = query.order_by(stopsTable.lat)
+    #
+    # In fact, decided to do this instead
+    query = query.limit(1000)
 
     waitOnFile(db_block_file)
 
@@ -277,8 +282,10 @@ async def get_vehicles(minLat:     float = Query(default=None),
             # as positional arguments :
             query = query.filter(or_(*route_filters))
 
-
-    query = query.order_by(vehiclesTable.lat)
+    # Decided against doing this.
+    #query = query.order_by(vehiclesTable.lat)
+    # Did this in case anyone uses the API directly.
+    query = query.limit(1000)
 
     waitOnFile(db_block_file)
 

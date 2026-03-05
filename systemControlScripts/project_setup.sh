@@ -93,5 +93,10 @@ cd ../databases/stops
 rm -f database.db
 ./dbUpdate.sh ../../environment.vars
 
+# Put the pre commit hook in place
+cd ../../..
+./installPreCommitHook.sh
+
+
 exit 0
 
