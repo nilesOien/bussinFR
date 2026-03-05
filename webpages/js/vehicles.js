@@ -15,13 +15,17 @@ async function drawVehicles(){
     // If we got here, we're doing an update. Reset the clock.
     vehicleUpdateSec = config['updateSec'];
 
-    // Check if map is zoomed out too far to even try
-    mapZoom = map.getZoom();
-    if (mapZoom < config['minZoomForVehicles']){
-      removeVehicles();
-      document.getElementById('vehicleInfoPara').innerHTML = 'Map is zoomed out to level ' + mapZoom +
-         ' need to zoom in to level ' + config['minZoomForVehicles'] + ' to show vehicles.';
-      return;
+    // Check if map is zoomed out too far to even try.
+    // Only do this if routesCSV is not set, because
+    // if that's set then we probably filter out most vehicles anyway.
+    if (routesCSV.length == 0){
+      mapZoom = map.getZoom();
+      if (mapZoom < config['minZoomForVehicles']){
+        removeVehicles();
+        document.getElementById('vehicleInfoPara').innerHTML = 'Map is zoomed out to level ' + mapZoom +
+           ' need to zoom in to level ' + config['minZoomForVehicles'] + ' to show vehicles.';
+        return;
+      }
     }
 
     let bounds = map.getBounds();
