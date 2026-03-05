@@ -91,7 +91,7 @@ async function drawVehicles(){
        let tmStr=tArray[0];
        let tRel=tArray[1];
 
-       status = '<B>Route ' + vehicle['route'] + '</b>' + " bearing " + vehicle['bearing'] +
+       status = '<B>Route ' + vehicle['route'] + '</b>' + " bearing " + Math.round(vehicle['bearing']) +
            "<br>Time : " + tmStr + "<br>" + tRel + "<br>In motion : " + im;
 
        v = { "pos": pos, "status": status, "bearing": vehicle['bearing'], "current_status": vehicle['current_status'] };
