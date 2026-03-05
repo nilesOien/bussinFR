@@ -41,3 +41,26 @@ directory).
 At the time of writing this runs on a Digital Ocean "droplet"
 server in San Francisco running Ubuntu.
 
+# Setup
+
+Each agency is monitored separately with software set up under a separate
+linux account. At the time of writing, configurations exist for CDOT and RTD
+under the linux users cdot and rtd respectively.
+
+Setup for CDOT involves clong the software and then doing something like :
+
+```
+cd $HOME/bussinFR/systemControlScripts/
+./project_setup.sh cdot
+```
+
+Starting the software is something like :
+
+```
+cd $HOME/bussinFR/systemControlScripts/
+./project_start.sh cdot
+```
+
+Adding a new agency involves developing a configuration and adding a reverse
+proxy to the port used by uvicorn to the nginx setup.
+
