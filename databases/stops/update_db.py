@@ -10,6 +10,15 @@
 # 35176,35176,West Glenwood Park & Ride,Vehicles Travelling North,39.557502,-107.353704,35176,,0,,,1,
 # 35471,35471,Wooly Mammoth Park & Ride,Vehicles Travelling South,39.697713,-105.207457,35471,,0,,,1,
 #
+# Or at least it used to - now (as of June 2026) it looks like this :
+# parent_station,stop_lat,wheelchair_boarding,stop_code,stop_lon,stop_timezone,stop_url,stop_id,stop_desc,stop_name,location_type,platform_code,zone_id
+# ,39.767591,1,35234,-104.973545,,,35234,Vehicles Travelling East,Larimer St & Downing St,0,,
+# ,39.764239,1,35232,-104.97787,,,35232,Vehicles Travelling East,Larimer St & 32nd St,0,,
+# ,39.765885,1,35233,-104.975756,,,35233,Vehicles Travelling East,Larimer St & 34th St,0,,
+#
+# Because RTD introduced the concept of parent stations.
+# So, we have to take the indicies from the header line.
+#
 # Database tables look like this :
 # CREATE TABLE stops (
 #	stopid VARCHAR NOT NULL, 
@@ -92,11 +101,28 @@ print(f"Read {len(lines_list)} lines from {args.stopFile} including header")
 first_line = True
 stop_list = []
 line_num=0
+indicies={}
+stop_id_list = []
+
 for line in lines_list :
     line_num += 1
-    # Skip the first line, it's a header.
+    # The first line, is a header, use it to get the indicies.
     if first_line :
         first_line = False
+        hdr_list=line.split(',')
+
+        desired_items=[ 'stop_lat', 'stop_id', 'stop_lon', 'stop_name', 'stop_desc' ]
+        for item in desired_items :
+            if item not in hdr_list :
+                print(f"Could not find required header field {item} in header")
+                quit()
+
+
+        for item in desired_items :
+            indicies[item] = hdr_list.index(item)
+        print("Indicies from header line : ")
+        pprint.pprint(indicies)
+        # OK, done with first line.
         continue
 
     items = line.split(',')
@@ -106,18 +132,23 @@ for line in lines_list :
         continue
 
     try:
-        lat = float(items[4])
+        lat = float(items[indicies['stop_lat']])
     except ValueError:
-        print(f"Skipping line {line_num} of {args.stopFile} as could not convert '{items[4]}' to a float for latitude.")
+        print(f"Skipping line {line_num} of {args.stopFile} as could not convert '{items[indicies['stop_lat']]}' to a float for latitude.")
         continue
 
     try:
-        lon = float(items[5])
+        lon = float(items[indicies['stop_lon']])
     except ValueError:
-        print(f"Skipping line {line_num} of {args.stopFile} as could not convert '{items[5]}' to a float for longitude.")
+        print(f"Skipping line {line_num} of {args.stopFile} as could not convert '{items[indicies['stop_lon']]} to a float for longitude.")
         continue
 
-    d = { "stopid":items[0], "stopname":items[2], "stopdesc":items[3], "lat":lat, "lon":lon }
+    if items[indicies['stop_id']] in stop_id_list :
+        print(f"Skipping line {line_num} of {args.stopFile} as stop id {items[indicies['stop_id']]} is a duplicate (parent station?)")
+        continue
+    stop_id_list.append(items[indicies['stop_id']])
+
+    d = { "stopid":items[indicies['stop_id']], "stopname":items[indicies['stop_name']], "stopdesc":items[indicies['stop_desc']], "lat":lat, "lon":lon }
     stop_list.append(d)
     
 if args.verbose :
